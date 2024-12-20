@@ -1,4 +1,5 @@
 import os, shutil
+import re
 from textnode import TextNode,TextType
 
 def main():
@@ -29,5 +30,23 @@ def copy_files(origin_path, destination_path):
         deeper_folder_files = os.listdir(item_path)
         if deeper_folder_files:
             copy_files(new_origin_path, new_destination_path)
+
+def extract_title(markdown):
+    # Use regex to match the first line starting with '# ' (Markdown H1)
+    match = re.search(r'^# (.+)', markdown, re.MULTILINE)
+    if match:
+        return match.group(1).strip() 
+    raise ValueError("No H1")
+
+def generate_page(from_path, template_path, dest_path):
+    print("Generating page from from_path to dest_path using template_path")
+    md_file = open(from_path, 'r')
+    md = md_file.read()
+    md_file.close()
+    template_file = open(template_path, 'r')
+    template = template_file.read()
+    template_file.close()
+    # UP TO HERE
+
 
 main()
